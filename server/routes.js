@@ -60,7 +60,7 @@ router.post('/member/login', (req, res) => {
 });
 
 // GET /api/member/me (Customer Profile & Loyalty Dashboard)
-router.get('/member/me', requireMemberAuth, (req, res) => {
+router.get(['/member/me', '/member/profile'], requireMemberAuth, (req, res) => {
   try {
     const member = req.member;
     const settings = db.getSettings();
