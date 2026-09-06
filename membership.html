@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Membership & Loyalty — ZENVORA SHOOP</title>
+  <meta name="description" content="Access your ZENVORA SHOOP customer membership, track loyalty stars, shopping progress, and unlock luxury fashion rewards.">
+  
+  <!-- Google Fonts for Luxury Fashion -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20260903b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="theme-color" content="#111111">
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    /* Scoped Luxury Membership Styles */
+    .membership-hero {
+      background: radial-gradient(circle at 50% 30%, #222222 0%, #111111 100%);
+      color: #ffffff;
+      padding: 3.5rem 0 3rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+    .membership-hero .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 0.35rem 1.1rem;
+      border-radius: 9999px;
+      margin-bottom: 0.8rem;
+    }
+    .membership-hero h1 {
+      color: #ffffff;
+      font-size: 2.3rem;
+      font-family: var(--font-serif);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
+    }
+    .membership-hero p {
+      color: #d1d5db;
+      font-size: 0.96rem;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* Auth Form Card */
+    .auth-container {
+      max-width: 440px;
+      margin: -2rem auto 4rem;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e8e7e3;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      padding: 2.2rem 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .auth-container h2 {
+      font-size: 1.5rem;
+      font-family: var(--font-serif);
+      margin-bottom: 0.3rem;
+      text-align: center;
+      color: #111111;
+    }
+    .auth-container p.auth-subtitle {
+      color: #6b7280;
+      font-size: 0.88rem;
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.4rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 0.95rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.94rem;
+      color: #111111;
+      background: #faf9f6;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: #d4af37;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    }
+    .btn-login {
+      width: 100%;
+      background: #111111;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.9rem;
+      border-radius: 6px;
+      border: 1px solid #111111;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn-login:hover {
+      background: #242424;
+      border-color: #d4af37;
+      transform: translateY(-1px);
+    }
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .alert-banner {
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.84rem;
+      margin-bottom: 1.25rem;
+      display: none;
+    }
+    .alert-danger {
+      background: #fef2f2;
+      border: 1px solid #f87171;
+      color: #b91c1c;
+    }
+    .auth-footer-help {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #f1f0ec;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #6b7280;
+    }
+    .auth-footer-help a {
+      color: #111111;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    /* Dashboard Layout */
+    .dashboard-wrap {
+      display: none; /* revealed upon login */
+      padding: 2.5rem 0 4rem;
+    }
+    .member-profile-card {
+      background: linear-gradient(135deg, #141414 0%, #202020 100%);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 14px;
+      color: #ffffff;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.16);
+      margin-bottom: 2rem;
+    }
+    .member-profile-card::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .profile-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .brand-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #d4af37;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .member-name {
+      font-size: 1.8rem;
+      font-family: var(--font-serif);
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+    }
+    .member-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: linear-gradient(90deg, #d4af37 0%, #eed277 100%);
+      color: #111111;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.85rem;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(212, 175, 55, 0.35);
+    }
+    .tier-badge.tier-VIP {
+      background: linear-gradient(90deg, #8a2be2 0%, #ba55d3 100%);
+      color: #ffffff;
+    }
+    .tier-badge.tier-Silver {
+      background: linear-gradient(90deg, #9ca3af 0%, #e5e7eb 100%);
+      color: #111111;
+    }
+    .tier-badge.tier-New-Member {
+      background: #374151;
+      color: #f3f4f6;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #4ade80;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+    }
+    .btn-logout {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 0.45rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #fca5a5;
+    }
+    .profile-card-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .detail-item span.detail-label {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9ca3af;
+      margin-bottom: 0.25rem;
+    }
+    .detail-item span.detail-val {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: var(--font-sans);
+    }
+    .detail-item span.detail-val.gold {
+      color: #d4af37;
+      letter-spacing: 0.05em;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e8e7e3;
+      padding: 1.35rem 1.25rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+    .stat-card-icon {
+      font-size: 1.35rem;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+    .stat-card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 0.35rem;
+    }
+    .stat-card-number {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #111111;
+      font-family: var(--font-serif);
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+    }
+    .stat-card-sub {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    /* Loyalty Progress Section */
+    .loyalty-progress-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e8e7e3;
+      padding: 2rem;
+      margin-bottom: 2.2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+    .loyalty-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .loyalty-title {
+      font-size: 1.35rem;
+      font-family: var(--font-serif);
+      color: #111111;
+    }
+    .loyalty-ratio {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #d4af37;
+      background: #faf6e9;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
+    .progress-bar-container {
+      width: 100%;
+      height: 14px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #d4af37 0%, #f3c235 100%);
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .star-milestones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 0 0.5rem;
+    }
+    .star-milestone-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .milestone-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      color: #9ca3af;
+      border: 1px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      transition: all 0.25s ease;
+    }
+    .star-milestone-step.active .milestone-icon {
+      background: #d4af37;
+      color: #ffffff;
+      border-color: #b89326;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+    .milestone-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #6b7280;
+    }
+    .reward-callout {
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.94rem;
+    }
+    .reward-callout.in-progress {
+      background: #faf6e9;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: #855b00;
+    }
+    .reward-callout.unlocked {
+      background: #ecfdf5;
+      border: 1.5px solid #10b981;
+      color: #065f46;
+      animation: pulseReward 2s infinite;
+    }
+    .reward-callout.redeemed {
+      background: #eff6ff;
+      border: 1px solid #93c5fd;
+      color: #1e40af;
+    }
+    @keyframes pulseReward {
+      0%, 100% { box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+      50% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.25); }
+    }
+
+    /* History Table */
+    .history-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e8e7e3;
+      padding: 1.8rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+    }
+    .history-header {
+      margin-bottom: 1.2rem;
+    }
+    .history-title {
+      font-size: 1.25rem;
+      font-family: var(--font-serif);
+      color: #111111;
+      margin-bottom: 0.2rem;
+    }
+    .history-subtitle {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    .custom-table th {
+      background: #faf9f6;
+      color: #4b5563;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e8e7e3;
+    }
+    .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f0ec;
+      color: #1a1a1a;
+    }
+    .custom-table tr:hover td {
+      background: #faf9f6;
+    }
+    .table-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    .table-badge.completed {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .table-badge.pending {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: #9ca3af;
+      font-size: 0.92rem;
+    }
+
+    /* Privacy Banner */
+    .privacy-notice {
+      margin-top: 2rem;
+      background: #faf9f6;
+      border: 1px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+      color: #6b7280;
+    }
+
+    @media (max-width: 640px) {
+      .auth-container {
+        margin: -1.5rem 1rem 3rem;
+        padding: 1.6rem 1.25rem;
+      }
+      .member-profile-card {
+        padding: 1.35rem;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+      }
+      .stat-card {
+        padding: 1rem;
+      }
+      .stat-card-number {
+        font-size: 1.35rem;
+      }
+      .custom-table th, .custom-table td {
+        padding: 0.65rem 0.5rem;
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Top Announcement Bar (Preserved Brand Standard) -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-bar-left">
+        <div class="top-bar-item">
+          <span>📍 Karachi Cash on Delivery</span>
+        </div>
+        <div class="top-bar-item">
+          <span>⚡ 2-3 Days Fast Doorstep Delivery</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <button type="button" id="download-app-btn" class="download-app-link" aria-label="Download ZENVORA SHOOP App">
+          <span aria-hidden="true">⇩</span> Download App
+        </button>
+        <div class="top-bar-item top-bar-whatsapp">
+          <a href="https://wa.me/923232974451" class="top-bar-link top-bar-wa-btn" target="_blank" rel="noopener" aria-label="WhatsApp Orders: 03232974451">
+            <span class="top-bar-wa-icon" aria-hidden="true">💬</span>
+            <span class="top-bar-wa-label">WhatsApp Orders:</span>
+            <span class="top-bar-wa-number">03232974451</span>
+          </a>
+        </div>
+        <div class="top-social-wrap" style="display: flex; gap: 0.75rem; margin-left: 0.5rem;">
+          <a href="https://www.facebook.com/zenvorashoop/" target="_blank" rel="noopener" class="top-social-link" title="Facebook">FB</a>
+          <a href="https://www.instagram.com/zenvorashoop/?hl=en" target="_blank" rel="noopener" class="top-social-link" title="Instagram">IG</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-title">ZENVORA <span>SHOOP</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-menu" id="nav-menu">
+          <li class="mobile-nav-header">
+            <span class="mobile-nav-title">ZENVORA <span>SHOOP</span></span>
+            <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="Close navigation menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </li>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#products" class="nav-link">Categories</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="membership.html" class="nav-link active" style="color: #d4af37; font-weight: 700;">Membership</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="nav-contact-badge">
+          <span class="nav-contact-label">WhatsApp Direct</span>
+          <a href="https://wa.me/923232974451" target="_blank" rel="noopener" class="nav-contact-value">0323 2974451</a>
+        </div>
+
+        <a href="cart.html" class="cart-icon-btn" title="View Shopping Cart">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span class="cart-badge">0</span>
+        </a>
+
+        <button class="hamburger" id="hamburger-btn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Banner -->
+    <section class="membership-hero">
+      <div class="container">
+        <span class="badge">★ ZENVORA PRIVILEGE CLUB ★</span>
+        <h1 id="page-hero-title">Customer Membership & Loyalty</h1>
+        <p id="page-hero-desc">
+          Sign in to check your loyalty stars, track shopping milestones, and unlock exclusive rewards crafted for our valued patrons.
+        </p>
+      </div>
+    </section>
+
+    <!-- 1. LOGIN VIEW -->
+    <section id="login-view" class="container">
+      <div class="auth-container">
+        <h2>Member Sign In</h2>
+        <p class="auth-subtitle">Enter your CNIC or Membership ID and PIN</p>
+
+        <div id="login-error-banner" class="alert-banner alert-danger" role="alert"></div>
+
+        <form id="member-login-form">
+          <div class="form-group">
+            <label for="member-identifier">CNIC / Membership ID</label>
+            <input
+              type="text"
+              id="member-identifier"
+              class="form-control"
+              placeholder="e.g. ZV-000001 or 42101-1234567-1"
+              required
+              autocomplete="username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="member-pin">Password / PIN</label>
+            <input
+              type="password"
+              id="member-pin"
+              class="form-control"
+              placeholder="Enter your confidential PIN"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button type="submit" id="btn-submit-login" class="btn-login">
+            <span>Login to Member Portal</span> →
+          </button>
+        </form>
+
+        <div class="auth-footer-help">
+          <p>
+            Have questions or need assistance with your membership?
+            <br>
+            <a href="https://wa.me/923232974451" target="_blank" rel="noopener">Contact WhatsApp Concierge (03232974451)</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CUSTOMER DASHBOARD VIEW -->
+    <section id="dashboard-view" class="dashboard-wrap container">
+      <!-- Member Profile Card -->
+      <div class="member-profile-card">
+        <div class="profile-card-header">
+          <div>
+            <span class="brand-tag">ZENVORA SHOOP OFFICIAL MEMBER</span>
+            <h2 class="member-name" id="dash-member-name">Loading...</h2>
+            <div class="member-badges">
+              <span class="tier-badge" id="dash-tier-badge">Gold Member</span>
+              <span class="status-badge" id="dash-status-badge">● Active</span>
+            </div>
+          </div>
+          <div>
+            <button type="button" id="btn-member-logout" class="btn-logout" title="Sign out of membership account">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-card-details">
+          <div class="detail-item">
+            <span class="detail-label">Membership ID</span>
+            <span class="detail-val gold" id="dash-member-id">ZV-000000</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">National ID (CNIC)</span>
+            <span class="detail-val" id="dash-masked-cnic">*****-*******-*</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Registered Phone</span>
+            <span class="detail-val" id="dash-phone">---</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Member Since</span>
+            <span class="detail-val" id="dash-since">---</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-card-icon">🛍️</span>
+          <div class="stat-card-title">Total Shopping</div>
+          <div class="stat-card-number" id="dash-stat-shopping">0</div>
+          <div class="stat-card-sub">Completed orders</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-card-icon">💳</span>
+          <div class="stat-card-title">Total Amount Spent</div>
+          <div class="stat-card-number" id="dash-stat-spent">Rs. 0</div>
+          <div class="stat-card-sub">Lifetime spending</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-card-icon">⭐</span>
+          <div class="stat-card-title">Total Stars</div>
+          <div class="stat-card-number" id="dash-stat-stars">0</div>
+          <div class="stat-card-sub">Loyalty points earned</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-card-icon">👑</span>
+          <div class="stat-card-title">Current Level</div>
+          <div class="stat-card-number" id="dash-stat-level" style="font-size: 1.35rem;">Member</div>
+          <div class="stat-card-sub">Tier status</div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-card-icon">🎁</span>
+          <div class="stat-card-title">Reward Status</div>
+          <div class="stat-card-number" id="dash-stat-reward" style="font-size: 1.25rem;">In Progress</div>
+          <div class="stat-card-sub" id="dash-stat-reward-sub">1 Shopping Remaining</div>
+        </div>
+      </div>
+
+      <!-- Shopping Progress Card -->
+      <div class="loyalty-progress-card">
+        <div class="loyalty-header">
+          <div>
+            <h3 class="loyalty-title">Loyalty Milestone Progress</h3>
+            <p style="color: #6b7280; font-size: 0.88rem; margin-top: 0.2rem;">
+              Each completed shopping awards 1 Loyalty Star. Reach the target to unlock your luxury reward!
+            </p>
+          </div>
+          <div class="loyalty-ratio" id="dash-progress-ratio">
+            0 / 5 Shopping (0%)
+          </div>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="dash-progress-fill" style="width: 0%;"></div>
+        </div>
+
+        <div class="star-milestones" id="dash-star-milestones">
+          <!-- Dynamic star milestones generated in JS -->
+        </div>
+
+        <div id="dash-reward-callout" class="reward-callout in-progress">
+          <span style="font-size: 1.5rem;" id="dash-callout-icon">✨</span>
+          <div id="dash-callout-text">
+            <strong>1 more shopping to unlock your reward.</strong> Keep shopping at ZENVORA SHOOP to unlock exclusive perks!
+          </div>
+        </div>
+      </div>
+
+      <!-- Shopping History Card -->
+      <div class="history-card">
+        <div class="history-header">
+          <h3 class="history-title">Shopping History</h3>
+          <p class="history-subtitle">Review your verified purchases credited to your membership profile.</p>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="custom-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Order #</th>
+                <th>Purchased Item / Note</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <tr>
+                <td colspan="5" class="empty-state">Loading your purchase history...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CNIC Privacy & Confidentiality Notice -->
+      <div class="privacy-notice">
+        <span style="font-size: 1.2rem;">🔒</span>
+        <span>
+          <strong>Confidential & Secure:</strong> Your personal credentials and shopping history are encrypted and strictly isolated. Only you can view your personal loyalty dashboard.
+        </span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (Preserved Standard Footer with Membership link) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Summary -->
+        <div class="footer-brand">
+          <h3>ZENVORA SHOOP</h3>
+          <span class="tagline">Luxury Pakistani Fashion</span>
+          <p>
+            Your premier destination for luxury designer lawn, unstitched & stitched festive wear, executive gents apparel, and artisanal footwear crafted with passion.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+            <li><a href="membership.html">Membership</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#products">Ladies Suits</a></li>
+            <li><a href="index.html#products">Gents Suits</a></li>
+            <li><a href="index.html#products">Shoes</a></li>
+            <li><a href="index.html#products">Sandals</a></li>
+            <li><a href="index.html#products">New Arrivals</a></li>
+          </ul>
+        </div>
+
+        <!-- Direct Contact -->
+        <div class="footer-col">
+          <h4>Get in Touch</h4>
+          <div class="footer-contact-item">
+            <span>💬 WhatsApp:</span>
+            <a href="https://wa.me/923232974451" style="color: #fff; font-weight: 600;" target="_blank" rel="noopener">03232974451</a>
+          </div>
+          <div class="footer-contact-item">
+            <span>📍 City:</span>
+            <span>Karachi, Pakistan</span>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.25rem;">
+            <a href="https://www.facebook.com/zenvorashoop/" target="_blank" rel="noopener" class="social-btn" style="padding: 0.5rem 1rem;">
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/zenvorashoop/?hl=en" target="_blank" rel="noopener" class="social-btn" style="padding: 0.5rem 1rem;">
+              Instagram
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 ZENVORA SHOOP. All Rights Reserved.</p>
+        <p>Crafted for Seamless Shopping with WhatsApp Ordering</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="cart.js?v=20260826"></script>
+  <script src="script.js?v=20260826"></script>
+
+  <!-- Client-side Membership Logic -->
+  <script>
+    const TOKEN_KEY = 'zenvora_member_session';
+
+    const loginView = document.getElementById('login-view');
+    const dashboardView = document.getElementById('dashboard-view');
+    const loginForm = document.getElementById('member-login-form');
+    const errorBanner = document.getElementById('login-error-banner');
+    const btnSubmit = document.getElementById('btn-submit-login');
+    const btnLogout = document.getElementById('btn-member-logout');
+    const heroTitle = document.getElementById('page-hero-title');
+    const heroDesc = document.getElementById('page-hero-desc');
+
+    function getSessionToken() {
+      return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
+    }
+
+    function setSessionToken(token) {
+      localStorage.setItem(TOKEN_KEY, token);
+    }
+
+    function clearSessionToken() {
+      localStorage.removeItem(TOKEN_KEY);
+      sessionStorage.removeItem(TOKEN_KEY);
+    }
+
+    function showError(msg) {
+      errorBanner.textContent = msg;
+      errorBanner.style.display = 'block';
+    }
+
+    function hideError() {
+      errorBanner.textContent = '';
+      errorBanner.style.display = 'none';
+    }
+
+    // Format PKR Currency
+    function formatPKR(val) {
+      return 'Rs. ' + Number(val || 0).toLocaleString('en-PK');
+    }
+
+    // Initialize Dashboard with Member Data
+    async function loadMemberDashboard() {
+      const token = getSessionToken();
+      if (!token) {
+        showLoginView();
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/member/me', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (!res.ok) {
+          clearSessionToken();
+          showLoginView();
+          return;
+        }
+
+        const data = await res.json();
+        renderDashboard(data);
+        loadShoppingHistory(token);
+        showDashboardView();
+      } catch (err) {
+        console.error('Failed to load member profile:', err);
+        clearSessionToken();
+        showLoginView();
+      }
+    }
+
+    function renderDashboard(data) {
+      heroTitle.textContent = 'Welcome, ' + data.name;
+      heroDesc.textContent = 'Your exclusive ZENVORA Privilege Club dashboard. Track your rewards and shopping history.';
+
+      document.getElementById('dash-member-name').textContent = data.name;
+      document.getElementById('dash-member-id').textContent = data.memberId;
+      document.getElementById('dash-masked-cnic').textContent = data.maskedCnic || '*****-*******-*';
+      document.getElementById('dash-phone').textContent = data.phone || 'Protected';
+      
+      const sinceDate = data.createdAt ? new Date(data.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '2026';
+      document.getElementById('dash-since').textContent = sinceDate;
+
+      // Tier Badge
+      const tierBadge = document.getElementById('dash-tier-badge');
+      tierBadge.textContent = data.membershipLevel + ' Member';
+      tierBadge.className = 'tier-badge tier-' + (data.membershipLevel ? data.membershipLevel.replace(/\s+/g, '-') : 'New');
+
+      // Status
+      const statusBadge = document.getElementById('dash-status-badge');
+      statusBadge.textContent = '● ' + (data.status || 'Active');
+
+      // Statistics
+      document.getElementById('dash-stat-shopping').textContent = data.totalShopping;
+      document.getElementById('dash-stat-spent').textContent = formatPKR(data.totalSpent);
+      document.getElementById('dash-stat-stars').textContent = '★ ' + data.totalStars;
+      document.getElementById('dash-stat-level').textContent = data.membershipLevel;
+
+      const rewardStat = document.getElementById('dash-stat-reward');
+      const rewardSub = document.getElementById('dash-stat-reward-sub');
+
+      if (data.isRewardUnlocked) {
+        rewardStat.textContent = 'Unlocked! 🎉';
+        rewardStat.style.color = '#16a34a';
+        rewardSub.textContent = 'Ready to Claim';
+      } else if (data.rewardStatus === 'Reward Redeemed') {
+        rewardStat.textContent = 'Redeemed';
+        rewardStat.style.color = '#2563eb';
+        rewardSub.textContent = data.shoppingRemaining + ' shopping to next reward';
+      } else {
+        rewardStat.textContent = 'In Progress';
+        rewardStat.style.color = '#d97706';
+        rewardSub.textContent = data.shoppingRemaining + ' Shopping Remaining';
+      }
+
+      // Progress bar & Milestones
+      const target = data.rewardTargetShopping || 5;
+      const current = data.currentCycleShopping !== undefined ? data.currentCycleShopping : data.totalShopping;
+      const percent = Math.min(100, Math.round((current / target) * 100));
+
+      document.getElementById('dash-progress-ratio').textContent = `${current} / ${target} Shopping (${percent}%)`;
+      document.getElementById('dash-progress-fill').style.width = percent + '%';
+
+      // Build milestone star icons
+      const milestoneContainer = document.getElementById('dash-star-milestones');
+      milestoneContainer.innerHTML = '';
+      for (let i = 1; i <= target; i++) {
+        const step = document.createElement('div');
+        step.className = 'star-milestone-step' + (i <= current ? ' active' : '');
+        step.innerHTML = `
+          <div class="milestone-icon">${i === target ? '🎁' : '★'}</div>
+          <span class="milestone-label">${i === target ? 'Reward' : i}</span>
+        `;
+        milestoneContainer.appendChild(step);
+      }
+
+      // Callout Banner
+      const callout = document.getElementById('dash-reward-callout');
+      const calloutIcon = document.getElementById('dash-callout-icon');
+      const calloutText = document.getElementById('dash-callout-text');
+
+      if (data.isRewardUnlocked) {
+        callout.className = 'reward-callout unlocked';
+        calloutIcon.textContent = '🎉';
+        calloutText.innerHTML = `
+          <strong>Congratulations! Your luxury reward has been unlocked!</strong><br>
+          You have successfully completed ${current} shopping milestones. Contact our WhatsApp concierge at <strong>03232974451</strong> or visit us to claim your exclusive discount voucher or boutique gift.
+        `;
+      } else if (data.rewardStatus === 'Reward Redeemed') {
+        callout.className = 'reward-callout redeemed';
+        calloutIcon.textContent = '✅';
+        calloutText.innerHTML = `
+          <strong>Previous reward redeemed!</strong><br>
+          You have started a fresh loyalty cycle. Complete ${data.shoppingRemaining} more shopping to unlock your next reward.
+        `;
+      } else {
+        callout.className = 'reward-callout in-progress';
+        calloutIcon.textContent = '✨';
+        calloutText.innerHTML = `
+          <strong>${data.shoppingRemaining} more shopping to unlock your reward.</strong><br>
+          Every order at ZENVORA SHOOP automatically adds 1 Star to your profile.
+        `;
+      }
+    }
+
+    async function loadShoppingHistory(token) {
+      const tbody = document.getElementById('history-table-body');
+      try {
+        const res = await fetch('/api/member/shopping', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to load');
+
+        const data = await res.json();
+        const records = data.records || [];
+
+        if (records.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="empty-state">No shopping transactions recorded yet. Your purchases will appear here automatically.</td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = records.map(r => {
+          const formattedDate = r.date ? new Date(r.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '---';
+          const isComp = (r.status || 'Completed').toLowerCase() === 'completed';
+          return `
+            <tr>
+              <td><strong>${formattedDate}</strong></td>
+              <td><code>${r.orderNumber || '#ZV'}</code></td>
+              <td>${r.notes || 'Fashion Apparel / Lawn'}</td>
+              <td><strong>${formatPKR(r.amount)}</strong></td>
+              <td><span class="table-badge ${isComp ? 'completed' : 'pending'}">${r.status || 'Completed'}</span></td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state" style="color: #ef4444;">Unable to load shopping history right now.</td></tr>`;
+      }
+    }
+
+    function showLoginView() {
+      loginView.style.display = 'block';
+      dashboardView.style.display = 'none';
+      heroTitle.textContent = 'Customer Membership & Loyalty';
+      heroDesc.textContent = 'Sign in to check your loyalty stars, track shopping milestones, and unlock exclusive rewards crafted for our valued patrons.';
+    }
+
+    function showDashboardView() {
+      loginView.style.display = 'none';
+      dashboardView.style.display = 'block';
+    }
+
+    // Handle Login Form Submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+
+      const identifier = document.getElementById('member-identifier').value.trim();
+      const pin = document.getElementById('member-pin').value.trim();
+
+      if (!identifier || !pin) {
+        showError('Please enter both your Member ID / CNIC and Password / PIN.');
+        return;
+      }
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<span>Verifying...</span>';
+
+      try {
+        const res = await fetch('/api/member/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, pin })
+        });
+
+        const result = await res.json();
+        if (!res.ok) {
+          throw new Error(result.error || 'Invalid credentials.');
+        }
+
+        setSessionToken(result.token);
+        await loadMemberDashboard();
+      } catch (err) {
+        showError(err.message || 'Login failed. Please check your credentials.');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<span>Login to Member Portal</span> →';
+      }
+    });
+
+    // Handle Logout
+    btnLogout.addEventListener('click', async () => {
+      const token = getSessionToken();
+      if (token) {
+        try {
+          await fetch('/api/member/logout', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+        } catch (e) {}
+      }
+      clearSessionToken();
+      loginForm.reset();
+      showLoginView();
+    });
+
+    // Auto-check session on load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMemberDashboard();
+    });
+  </script>
+</body>
+</html>

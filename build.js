@@ -1,0 +1,60 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const distDir = path.join(__dirname, 'dist');
+
+// Ensure dist directory exists
+if (!fs.existsSync(distDir)) {
+  fs.mkdirSync(distDir, { recursive: true });
+}
+
+// Allowed extensions or files to copy to dist
+const extensions = new Set([
+  '.html',
+  '.htm',
+  '.css',
+  '.js',
+  '.jpeg',
+  '.jpg',
+  '.png',
+  '.webp',
+  '.svg',
+  '.gif',
+  '.ico',
+  '.json',
+  '.xml',
+  '.txt',
+  '.webmanifest'
+]);
+
+const ignoredFiles = new Set([
+  'package.json',
+  'package-lock.json',
+  'tsconfig.json',
+  'metadata.json',
+  'build.js',
+  'server.js'
+]);
+
+const files = fs.readdirSync(__dirname);
+
+let copiedCount = 0;
+for (const file of files) {
+  const fullPath = path.join(__dirname, file);
+  const stat = fs.statSync(fullPath);
+  
+  if (stat.isFile()) {
+    if (ignoredFiles.has(file)) continue;
+    const ext = path.extname(file).toLowerCase();
+    if (extensions.has(ext) || file === '_headers') {
+      fs.copyFileSync(fullPath, path.join(distDir, file));
+      copiedCount++;
+    }
+  }
+}
+
+console.log(`Successfully built ${copiedCount} static assets into /dist directory.`);

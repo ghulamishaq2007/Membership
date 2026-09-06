@@ -1,0 +1,6 @@
+{
+  "name": "ZENVORA SHOOP | Pakistani Fashion, Suits, Shoes & Sandals",
+  "description": "Shop Pakistani ladies suits, gents suits, handbags, shoes and sandals at ZENVORA SHOOP. Cash on Delivery and Karachi delivery available.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

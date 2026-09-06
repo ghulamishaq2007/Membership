@@ -1,0 +1,22 @@
+[
+  {
+    "memberId": "ZV-000001",
+    "name": "Ayesha Khan",
+    "cnic": "42101-1234567-1",
+    "phone": "03232974451",
+    "passwordHash": "98d121770a581289e8f8a48f3710b1e2452f3794ac30fe7e3c1e80490f03f1e581dff1a3e528eddd810e02d7a8362e5ffbfc1a421afbc19b243cef75fec65304",
+    "passwordSalt": "c2e7d1ef43f5b74973d7ccddb0326c82",
+    "membershipLevel": "Gold",
+    "status": "Active",
+    "totalShopping": 4,
+    "totalSpent": 18500,
+    "totalStars": 4,
+    "currentCycleShopping": 4,
+    "rewardStatus": "In Progress",
+    "rewardHistory": [],
+    "createdAt": "2026-08-01T10:00:00.000Z",
+    "lastShoppingDate": "2026-09-01",
+    "notes": "VIP customer. Prefers luxury lawn suits.",
+    "updatedAt": "2026-09-06T06:24:47.244Z"
+  }
+]

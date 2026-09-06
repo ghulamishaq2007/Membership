@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal — ZENVORA SHOOP Membership Management</title>
+  <meta name="robots" content="noindex, nofollow">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css?v=20260903b">
+  <style>
+    /* Admin Portal Scoped Styling */
+    body {
+      background-color: #f4f3f0;
+    }
+    .admin-header {
+      background: #111111;
+      color: #ffffff;
+      padding: 1.25rem 0;
+      border-bottom: 2px solid #d4af37;
+    }
+    .admin-header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .admin-brand h1 {
+      font-size: 1.35rem;
+      color: #ffffff;
+      margin: 0;
+      font-family: var(--font-serif);
+      letter-spacing: 0.02em;
+    }
+    .admin-brand h1 span {
+      color: #d4af37;
+    }
+    .admin-pill {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 800;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      color: #d4af37;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+    }
+    .admin-user-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .admin-user-info {
+      font-size: 0.84rem;
+      color: #d1d5db;
+    }
+    .admin-user-info strong {
+      color: #ffffff;
+    }
+    .btn-admin-nav {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-admin-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .btn-admin-logout {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #fca5a5;
+    }
+    .btn-admin-logout:hover {
+      background: rgba(239, 68, 68, 0.35);
+      color: #ffffff;
+    }
+
+    /* Admin Login Box */
+    .admin-auth-wrapper {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .admin-auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      padding: 2.2rem;
+    }
+    .admin-auth-card h2 {
+      font-size: 1.45rem;
+      font-family: var(--font-serif);
+      margin-bottom: 0.3rem;
+      color: #111111;
+      text-align: center;
+    }
+    .admin-auth-card p {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+
+    /* Admin Content */
+    .admin-content-area {
+      display: none;
+      padding: 2rem 0 4rem;
+    }
+
+    /* Metric Cards Grid */
+    .admin-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+    .admin-metric-card {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      padding: 1.25rem 1.1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      position: relative;
+    }
+    .metric-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #6b7280;
+      margin-bottom: 0.35rem;
+    }
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #111111;
+      font-family: var(--font-serif);
+    }
+    .metric-value.gold {
+      color: #b89326;
+    }
+    .metric-value.success {
+      color: #16a34a;
+    }
+
+    /* Loyalty Target Setting Banner */
+    .loyalty-rule-banner {
+      background: #ffffff;
+      border: 1.5px solid #d4af37;
+      border-radius: 10px;
+      padding: 1.1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .loyalty-rule-info h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+      color: #111111;
+    }
+    .loyalty-rule-info p {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    /* Management Section */
+    .admin-table-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      padding: 1.5rem;
+    }
+    .admin-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .admin-filters {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .search-input {
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      min-width: 250px;
+    }
+    .filter-select {
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      background: #ffffff;
+    }
+    .admin-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .btn-gold {
+      background: #111111;
+      color: #ffffff;
+      border: 1px solid #111111;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .btn-gold:hover {
+      background: #2b2b2b;
+      border-color: #d4af37;
+      color: #d4af37;
+    }
+    .btn-accent {
+      background: #d4af37;
+      color: #111111;
+      font-weight: 700;
+      border: 1px solid #b89326;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-accent:hover {
+      background: #b89326;
+      color: #ffffff;
+    }
+
+    /* Admin Table */
+    .admin-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+    .admin-data-table th {
+      background: #faf9f6;
+      padding: 0.8rem 0.9rem;
+      color: #4b5563;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1.5px solid #e5e7eb;
+    }
+    .admin-data-table td {
+      padding: 0.85rem 0.9rem;
+      border-bottom: 1px solid #f3f4f6;
+      color: #1a1a1a;
+      vertical-align: middle;
+    }
+    .admin-data-table tr:hover td {
+      background: #fdfdfc;
+    }
+
+    /* Status Pills */
+    .reward-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .reward-pill.unlocked {
+      background: #fef08a;
+      color: #854d0e;
+      border: 1px solid #ca8a04;
+      font-weight: 800;
+      animation: glowG 2s infinite;
+    }
+    .reward-pill.in-progress {
+      background: #faf6e9;
+      color: #b45309;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+    }
+    .reward-pill.redeemed {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+    .reward-pill.not-eligible {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    @keyframes glowG {
+      0%, 100% { box-shadow: 0 0 4px rgba(202, 138, 4, 0.4); }
+      50% { box-shadow: 0 0 10px rgba(202, 138, 4, 0.8); }
+    }
+
+    /* Action Buttons in Table */
+    .row-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .btn-row {
+      padding: 0.3rem 0.65rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      border-radius: 4px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-row:hover {
+      background: #f3f4f6;
+      color: #111111;
+    }
+    .btn-row-add-shp {
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #166534;
+    }
+    .btn-row-add-shp:hover {
+      background: #dcfce7;
+    }
+    .btn-row-redeem {
+      background: #fef08a;
+      border-color: #eab308;
+      color: #854d0e;
+    }
+    .btn-row-redeem:hover {
+      background: #fde047;
+    }
+    .btn-row-del {
+      color: #ef4444;
+      border-color: #fecaca;
+    }
+    .btn-row-del:hover {
+      background: #fef2f2;
+    }
+
+    /* Modals */
+    .admin-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1000;
+      backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .admin-modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .modal-header h3 {
+      font-size: 1.35rem;
+      font-family: var(--font-serif);
+      color: #111111;
+      margin: 0;
+    }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: #9ca3af;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close-btn:hover {
+      color: #111111;
+    }
+    .modal-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.8rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    .btn-secondary {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .modal-grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .admin-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="container admin-header-flex">
+      <div class="admin-brand">
+        <h1>ZENVORA <span>SHOOP</span></h1>
+        <span class="admin-pill">Admin Portal</span>
+      </div>
+      <div id="admin-user-nav-wrap" class="admin-user-nav" style="display: none;">
+        <div class="admin-user-info">
+          Logged in: <strong id="header-admin-name">Admin</strong>
+        </div>
+        <button type="button" id="btn-admin-change-pwd" class="btn-admin-nav">Change Password</button>
+        <button type="button" id="btn-admin-logout" class="btn-admin-nav btn-admin-logout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. ADMIN LOGIN VIEW -->
+  <section id="admin-login-view" class="admin-auth-wrapper">
+    <div class="admin-auth-card">
+      <h2>Executive Login</h2>
+      <p>Authorized ZENVORA SHOOP Management Portal</p>
+
+      <div id="admin-login-error" class="alert-banner alert-danger" style="margin-bottom: 1.25rem;"></div>
+
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label for="admin-user-input">Admin Username / Email</label>
+          <input
+            type="text"
+            id="admin-user-input"
+            class="form-control"
+            placeholder="e.g. admin"
+            required
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="admin-pass-input">Admin Password</label>
+          <input
+            type="password"
+            id="admin-pass-input"
+            class="form-control"
+            placeholder="Enter secure admin password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" id="btn-admin-submit" class="btn-login" style="margin-top: 1rem;">
+          <span>Secure Admin Access</span> →
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 2. ADMIN DASHBOARD VIEW -->
+  <main id="admin-dashboard-view" class="admin-content-area">
+    <div class="container">
+      <!-- Metrics Cards -->
+      <div class="admin-metrics-grid">
+        <div class="admin-metric-card">
+          <div class="metric-label">Total Members</div>
+          <div class="metric-value" id="stat-total-members">0</div>
+        </div>
+        <div class="admin-metric-card">
+          <div class="metric-label">Active Members</div>
+          <div class="metric-value success" id="stat-active-members">0</div>
+        </div>
+        <div class="admin-metric-card">
+          <div class="metric-label">Silver Members</div>
+          <div class="metric-value" id="stat-silver-members">0</div>
+        </div>
+        <div class="admin-metric-card">
+          <div class="metric-label">Gold Members</div>
+          <div class="metric-value gold" id="stat-gold-members">0</div>
+        </div>
+        <div class="admin-metric-card">
+          <div class="metric-label">VIP Members</div>
+          <div class="metric-value" id="stat-vip-members">0</div>
+        </div>
+        <div class="admin-metric-card">
+          <div class="metric-label">Total Shopping</div>
+          <div class="metric-value" id="stat-total-shopping">0</div>
+        </div>
+        <div class="admin-metric-card">
+          <div class="metric-label">Rewards Unlocked</div>
+          <div class="metric-value gold" id="stat-rewards-unlocked">0</div>
+        </div>
+      </div>
+
+      <!-- Loyalty Setting Control -->
+      <div class="loyalty-rule-banner">
+        <div class="loyalty-rule-info">
+          <h3>Loyalty System Rule Configuration</h3>
+          <p>
+            Current Target: <strong id="rule-target-display">5 Completed Shopping = 1 Reward Unlocked</strong>.
+            Customers earn 1 Star for each completed purchase.
+          </p>
+        </div>
+        <div>
+          <button type="button" id="btn-edit-target" class="btn-accent">
+            ⚙️ Change Reward Target
+          </button>
+        </div>
+      </div>
+
+      <!-- Customer Management Section -->
+      <div class="admin-table-card">
+        <div class="admin-toolbar">
+          <div class="admin-filters">
+            <input
+              type="text"
+              id="member-search-input"
+              class="search-input"
+              placeholder="Search by Name, CNIC, Member ID, Phone..."
+            />
+            <select id="member-level-filter" class="filter-select">
+              <option value="All">All Membership Levels</option>
+              <option value="New Member">New Member</option>
+              <option value="Silver">Silver</option>
+              <option value="Gold">Gold</option>
+              <option value="VIP">VIP</option>
+            </select>
+            <select id="member-reward-filter" class="filter-select">
+              <option value="All">All Reward Statuses</option>
+              <option value="Reward Unlocked">Reward Unlocked</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Reward Redeemed">Reward Redeemed</option>
+            </select>
+          </div>
+
+          <div class="admin-actions">
+            <button type="button" id="btn-open-add-member" class="btn-gold">
+              + Add Customer
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div style="overflow-x: auto;">
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Customer Name</th>
+                <th>CNIC</th>
+                <th>Phone</th>
+                <th>Level</th>
+                <th>Shopping</th>
+                <th>Total Spent</th>
+                <th>Stars</th>
+                <th>Reward Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-members-tbody">
+              <tr>
+                <td colspan="10" style="text-align: center; padding: 2rem; color: #9ca3af;">
+                  Loading members...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- 1. Add Customer Modal -->
+  <div id="modal-add-member" class="admin-modal-backdrop">
+    <div class="admin-modal-card">
+      <div class="modal-header">
+        <h3>Create New Member</h3>
+        <button type="button" class="modal-close-btn" data-close="modal-add-member">&times;</button>
+      </div>
+
+      <form id="form-add-member">
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="add-name" class="form-control" placeholder="e.g. Fatima Ali" required />
+          </div>
+          <div class="form-group">
+            <label>CNIC (National ID) *</label>
+            <input type="text" id="add-cnic" class="form-control" placeholder="42101-1234567-1" required />
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="add-phone" class="form-control" placeholder="03232974451" />
+          </div>
+          <div class="form-group">
+            <label>Membership ID (Auto / Custom)</label>
+            <input type="text" id="add-id" class="form-control" placeholder="e.g. ZV-000002" />
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Password / PIN *</label>
+            <input type="text" id="add-pin" class="form-control" value="1234" required />
+          </div>
+          <div class="form-group">
+            <label>Membership Level</label>
+            <select id="add-level" class="form-control">
+              <option value="New Member">New Member</option>
+              <option value="Silver">Silver</option>
+              <option value="Gold">Gold</option>
+              <option value="VIP">VIP</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Initial Shopping Count</label>
+            <input type="number" id="add-shopping" class="form-control" value="0" min="0" />
+          </div>
+          <div class="form-group">
+            <label>Initial Stars</label>
+            <input type="number" id="add-stars" class="form-control" value="0" min="0" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select id="add-status" class="form-control">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Suspended">Suspended</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Admin Notes</label>
+          <textarea id="add-notes" class="form-control" rows="2" placeholder="Internal notes..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close="modal-add-member">Cancel</button>
+          <button type="submit" class="btn-gold">Create Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Edit Customer Modal -->
+  <div id="modal-edit-member" class="admin-modal-backdrop">
+    <div class="admin-modal-card">
+      <div class="modal-header">
+        <h3>Edit Customer Details</h3>
+        <button type="button" class="modal-close-btn" data-close="modal-edit-member">&times;</button>
+      </div>
+
+      <form id="form-edit-member">
+        <input type="hidden" id="edit-member-id" />
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Customer Name *</label>
+            <input type="text" id="edit-name" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>CNIC *</label>
+            <input type="text" id="edit-cnic" class="form-control" required />
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="edit-phone" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Reset Password / PIN (Leave empty to keep)</label>
+            <input type="text" id="edit-pin" class="form-control" placeholder="New PIN..." />
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Membership Level</label>
+            <select id="edit-level" class="form-control">
+              <option value="New Member">New Member</option>
+              <option value="Silver">Silver</option>
+              <option value="Gold">Gold</option>
+              <option value="VIP">VIP</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="edit-status" class="form-control">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Total Shopping Count</label>
+            <input type="number" id="edit-shopping" class="form-control" min="0" />
+          </div>
+          <div class="form-group">
+            <label>Total Loyalty Stars</label>
+            <input type="number" id="edit-stars" class="form-control" min="0" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Reward Status</label>
+          <select id="edit-reward-status" class="form-control">
+            <option value="In Progress">In Progress</option>
+            <option value="Reward Unlocked">Reward Unlocked</option>
+            <option value="Reward Redeemed">Reward Redeemed</option>
+            <option value="Not Eligible">Not Eligible</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Internal Notes</label>
+          <textarea id="edit-notes" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close="modal-edit-member">Cancel</button>
+          <button type="submit" class="btn-gold">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Add Shopping Modal -->
+  <div id="modal-add-shopping" class="admin-modal-backdrop">
+    <div class="admin-modal-card">
+      <div class="modal-header">
+        <h3>Record Completed Shopping</h3>
+        <button type="button" class="modal-close-btn" data-close="modal-add-shopping">&times;</button>
+      </div>
+
+      <form id="form-add-shopping">
+        <div class="form-group">
+          <label>Select Customer *</label>
+          <select id="shp-member-id" class="form-control" required>
+            <!-- dynamically loaded -->
+          </select>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Order Number *</label>
+            <input type="text" id="shp-order-num" class="form-control" placeholder="#ZV-1005" required />
+          </div>
+          <div class="form-group">
+            <label>Order Amount (PKR) *</label>
+            <input type="number" id="shp-amount" class="form-control" placeholder="e.g. 4500" min="0" step="50" required />
+          </div>
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label>Order Date</label>
+            <input type="date" id="shp-date" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Transaction Status</label>
+            <select id="shp-status" class="form-control">
+              <option value="Completed">Completed (Awards Star & Counts towards Reward)</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Purchased Items / Note</label>
+          <input type="text" id="shp-notes" class="form-control" placeholder="e.g. Pakistani Printed Lawn Suit White Green" />
+        </div>
+
+        <div style="background: #faf6e9; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 6px; padding: 0.8rem; font-size: 0.8rem; color: #855b00; margin-top: 0.5rem;">
+          ⚡ <strong>Automatic Calculation:</strong> Submitting a completed shopping will automatically increment the customer's shopping count, add purchase amount to total spending, add 1 Loyalty Star, and trigger Reward Unlock if the target is reached.
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close="modal-add-shopping">Cancel</button>
+          <button type="submit" class="btn-accent">Add Shopping Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Customer Full Profile Modal -->
+  <div id="modal-view-profile" class="admin-modal-backdrop">
+    <div class="admin-modal-card" style="max-width: 720px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="view-prof-title">Customer Profile</h3>
+          <span style="font-size: 0.82rem; color: #6b7280;" id="view-prof-sub">Loading...</span>
+        </div>
+        <button type="button" class="modal-close-btn" data-close="modal-view-profile">&times;</button>
+      </div>
+
+      <div id="view-prof-details" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; background: #faf9f6; padding: 1.2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
+        <!-- Filled by JS -->
+      </div>
+
+      <h4 style="font-size: 1.05rem; font-family: var(--font-serif); margin-bottom: 0.6rem; color: #111111;">
+        Shopping History
+      </h4>
+
+      <div style="max-height: 280px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Order #</th>
+              <th>Item / Note</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="view-prof-shopping-tbody">
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close="modal-view-profile">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Change Reward Target Modal -->
+  <div id="modal-edit-target" class="admin-modal-backdrop">
+    <div class="admin-modal-card" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3>Configure Reward Target</h3>
+        <button type="button" class="modal-close-btn" data-close="modal-edit-target">&times;</button>
+      </div>
+
+      <form id="form-edit-target">
+        <div class="form-group">
+          <label>Required Shopping Count for Reward</label>
+          <input type="number" id="target-count-input" class="form-control" min="1" max="100" value="5" required />
+          <span style="font-size: 0.78rem; color: #6b7280; margin-top: 0.3rem; display: block;">
+            Default is 5. Changing this will update the milestone progress target for all customers.
+          </span>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close="modal-edit-target">Cancel</button>
+          <button type="submit" class="btn-gold">Update Target</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Change Password Modal -->
+  <div id="modal-change-pwd" class="admin-modal-backdrop">
+    <div class="admin-modal-card" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3>Change Admin Password</h3>
+        <button type="button" class="modal-close-btn" data-close="modal-change-pwd">&times;</button>
+      </div>
+
+      <form id="form-change-pwd">
+        <div class="form-group">
+          <label>Current Password</label>
+          <input type="password" id="admin-curr-pwd" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>New Password (Min 6 chars)</label>
+          <input type="password" id="admin-new-pwd" class="form-control" required minlength="6" />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close="modal-change-pwd">Cancel</button>
+          <button type="submit" class="btn-gold">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Client-side Admin Logic -->
+  <script>
+    const ADMIN_TOKEN_KEY = 'zenvora_admin_session';
+
+    const loginView = document.getElementById('admin-login-view');
+    const dashboardView = document.getElementById('admin-dashboard-view');
+    const userNavWrap = document.getElementById('admin-user-nav-wrap');
+    const loginForm = document.getElementById('admin-login-form');
+    const loginError = document.getElementById('admin-login-error');
+    const btnLogin = document.getElementById('btn-admin-submit');
+    const btnLogout = document.getElementById('btn-admin-logout');
+
+    let allMembersCache = [];
+    let currentSettings = { rewardTargetShopping: 5 };
+
+    function getAdminToken() {
+      return localStorage.getItem(ADMIN_TOKEN_KEY) || sessionStorage.getItem(ADMIN_TOKEN_KEY);
+    }
+
+    function setAdminToken(tok) {
+      localStorage.setItem(ADMIN_TOKEN_KEY, tok);
+    }
+
+    function clearAdminToken() {
+      localStorage.removeItem(ADMIN_TOKEN_KEY);
+      sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+    }
+
+    function formatPKR(val) {
+      return 'Rs. ' + Number(val || 0).toLocaleString('en-PK');
+    }
+
+    // Modal helpers
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
+
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeModal(btn.getAttribute('data-close'));
+      });
+    });
+
+    // Close on backdrop click
+    document.querySelectorAll('.admin-modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) backdrop.style.display = 'none';
+      });
+    });
+
+    // Load Admin Dashboard
+    async function loadAdminDashboard() {
+      const token = getAdminToken();
+      if (!token) {
+        showLogin();
+        return;
+      }
+
+      try {
+        const statsRes = await fetch('/api/admin/stats', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (!statsRes.ok) {
+          clearAdminToken();
+          showLogin();
+          return;
+        }
+
+        const stats = await statsRes.json();
+        renderStats(stats);
+        currentSettings.rewardTargetShopping = stats.rewardTargetShopping || 5;
+        document.getElementById('rule-target-display').textContent = `${currentSettings.rewardTargetShopping} Completed Shopping = 1 Reward Unlocked`;
+
+        await loadMembersList();
+        showDashboard();
+      } catch (err) {
+        console.error('Failed to load admin stats:', err);
+        clearAdminToken();
+        showLogin();
+      }
+    }
+
+    function renderStats(stats) {
+      document.getElementById('stat-total-members').textContent = stats.totalMembers || 0;
+      document.getElementById('stat-active-members').textContent = stats.activeMembers || 0;
+      document.getElementById('stat-silver-members').textContent = stats.silverMembers || 0;
+      document.getElementById('stat-gold-members').textContent = stats.goldMembers || 0;
+      document.getElementById('stat-vip-members').textContent = stats.vipMembers || 0;
+      document.getElementById('stat-total-shopping').textContent = stats.totalShopping || 0;
+      document.getElementById('stat-rewards-unlocked').textContent = stats.rewardsUnlocked || 0;
+    }
+
+    async function loadMembersList() {
+      const token = getAdminToken();
+      const search = document.getElementById('member-search-input').value.trim();
+      const level = document.getElementById('member-level-filter').value;
+      const rewardStatus = document.getElementById('member-reward-filter').value;
+
+      let url = '/api/admin/members?';
+      if (search) url += 'search=' + encodeURIComponent(search) + '&';
+      if (level) url += 'level=' + encodeURIComponent(level) + '&';
+      if (rewardStatus) url += 'rewardStatus=' + encodeURIComponent(rewardStatus);
+
+      const res = await fetch(url, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      allMembersCache = data.members || [];
+      renderMembersTable(allMembersCache);
+      updateCustomerDropdown(allMembersCache);
+    }
+
+    function renderMembersTable(members) {
+      const tbody = document.getElementById('admin-members-tbody');
+      if (members.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align: center; padding: 2.5rem; color: #9ca3af;">
+              No customers match the current filter or search criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = members.map(m => {
+        const rewardClass = m.rewardStatus === 'Reward Unlocked' ? 'unlocked' :
+                            m.rewardStatus === 'Reward Redeemed' ? 'redeemed' :
+                            m.rewardStatus === 'In Progress' ? 'in-progress' : 'not-eligible';
+        
+        return `
+          <tr>
+            <td><strong><code>${m.memberId}</code></strong></td>
+            <td><strong>${m.name}</strong></td>
+            <td>
+              <span id="cnic-text-${m.memberId}">${m.cnic}</span>
+            </td>
+            <td>${m.phone || '---'}</td>
+            <td><span class="table-badge completed">${m.membershipLevel}</span></td>
+            <td><strong>${m.totalShopping}</strong> <span style="font-size: 0.72rem; color: #6b7280;">(${m.currentCycleShopping || 0} in cycle)</span></td>
+            <td><strong>${formatPKR(m.totalSpent)}</strong></td>
+            <td>⭐ ${m.totalStars}</td>
+            <td><span class="reward-pill ${rewardClass}">${m.rewardStatus}</span></td>
+            <td>
+              <div class="row-btn-group">
+                <button type="button" class="btn-row" onclick="viewCustomerProfile('${m.memberId}')" title="View Profile & Shopping History">Profile</button>
+                <button type="button" class="btn-row btn-row-add-shp" onclick="openAddShoppingFor('${m.memberId}')" title="Add Completed Shopping">+ Shopping</button>
+                ${m.rewardStatus === 'Reward Unlocked' ? `<button type="button" class="btn-row btn-row-redeem" onclick="redeemCustomerReward('${m.memberId}', '${m.name}')" title="Mark reward as redeemed">Redeem</button>` : ''}
+                <button type="button" class="btn-row" onclick="openEditMember('${m.memberId}')" title="Edit Customer Details">Edit</button>
+                <button type="button" class="btn-row btn-row-del" onclick="deleteCustomer('${m.memberId}', '${m.name}')" title="Delete Member">×</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateCustomerDropdown(members) {
+      const select = document.getElementById('shp-member-id');
+      select.innerHTML = members.map(m => `
+        <option value="${m.memberId}">${m.memberId} — ${m.name} (${m.phone || 'No phone'})</option>
+      `).join('');
+    }
+
+    function showLogin() {
+      loginView.style.display = 'flex';
+      dashboardView.style.display = 'none';
+      userNavWrap.style.display = 'none';
+    }
+
+    function showDashboard() {
+      loginView.style.display = 'none';
+      dashboardView.style.display = 'block';
+      userNavWrap.style.display = 'flex';
+    }
+
+    // Login Form
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.style.display = 'none';
+
+      const username = document.getElementById('admin-user-input').value.trim();
+      const password = document.getElementById('admin-pass-input').value.trim();
+
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = '<span>Verifying...</span>';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Authentication failed');
+
+        setAdminToken(data.token);
+        document.getElementById('header-admin-name').textContent = data.admin.name || data.admin.username;
+        await loadAdminDashboard();
+      } catch (err) {
+        loginError.textContent = err.message || 'Invalid credentials.';
+        loginError.style.display = 'block';
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = '<span>Secure Admin Access</span> →';
+      }
+    });
+
+    // Logout
+    btnLogout.addEventListener('click', async () => {
+      const token = getAdminToken();
+      if (token) {
+        try {
+          await fetch('/api/admin/logout', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+        } catch (e) {}
+      }
+      clearAdminToken();
+      loginForm.reset();
+      showLogin();
+    });
+
+    // Filters & Search
+    document.getElementById('member-search-input').addEventListener('input', () => loadMembersList());
+    document.getElementById('member-level-filter').addEventListener('change', () => loadMembersList());
+    document.getElementById('member-reward-filter').addEventListener('change', () => loadMembersList());
+
+    // 1. Add Customer Form Submit
+    document.getElementById('btn-open-add-member').addEventListener('click', () => {
+      document.getElementById('form-add-member').reset();
+      document.getElementById('add-pin').value = '1234';
+      openModal('modal-add-member');
+    });
+
+    document.getElementById('form-add-member').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = getAdminToken();
+      const payload = {
+        name: document.getElementById('add-name').value.trim(),
+        cnic: document.getElementById('add-cnic').value.trim(),
+        phone: document.getElementById('add-phone').value.trim(),
+        memberId: document.getElementById('add-id').value.trim(),
+        password: document.getElementById('add-pin').value.trim(),
+        membershipLevel: document.getElementById('add-level').value,
+        initialShoppingCount: document.getElementById('add-shopping').value,
+        initialStars: document.getElementById('add-stars').value,
+        status: document.getElementById('add-status').value,
+        notes: document.getElementById('add-notes').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/admin/members', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to create member');
+
+        closeModal('modal-add-member');
+        await loadAdminDashboard();
+        alert(`Member ${data.member.name} (${data.member.memberId}) created successfully!`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    });
+
+    // 2. Edit Customer Modal
+    window.openEditMember = function(memberId) {
+      const member = allMembersCache.find(m => m.memberId === memberId);
+      if (!member) return;
+
+      document.getElementById('edit-member-id').value = member.memberId;
+      document.getElementById('edit-name').value = member.name;
+      document.getElementById('edit-cnic').value = member.cnic;
+      document.getElementById('edit-phone').value = member.phone || '';
+      document.getElementById('edit-pin').value = '';
+      document.getElementById('edit-level').value = member.membershipLevel || 'New Member';
+      document.getElementById('edit-status').value = member.status || 'Active';
+      document.getElementById('edit-shopping').value = member.totalShopping || 0;
+      document.getElementById('edit-stars').value = member.totalStars || 0;
+      document.getElementById('edit-reward-status').value = member.rewardStatus || 'In Progress';
+      document.getElementById('edit-notes').value = member.notes || '';
+
+      openModal('modal-edit-member');
+    };
+
+    document.getElementById('form-edit-member').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = getAdminToken();
+      const memberId = document.getElementById('edit-member-id').value;
+
+      const payload = {
+        name: document.getElementById('edit-name').value.trim(),
+        cnic: document.getElementById('edit-cnic').value.trim(),
+        phone: document.getElementById('edit-phone').value.trim(),
+        membershipLevel: document.getElementById('edit-level').value,
+        status: document.getElementById('edit-status').value,
+        totalShopping: document.getElementById('edit-shopping').value,
+        totalStars: document.getElementById('edit-stars').value,
+        rewardStatus: document.getElementById('edit-reward-status').value,
+        notes: document.getElementById('edit-notes').value.trim()
+      };
+
+      const newPin = document.getElementById('edit-pin').value.trim();
+      if (newPin) payload.password = newPin;
+
+      try {
+        const res = await fetch('/api/admin/members/' + memberId, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to update member');
+
+        closeModal('modal-edit-member');
+        await loadAdminDashboard();
+        alert(`Member ${data.member.memberId} updated successfully.`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    });
+
+    // 3. Delete Customer
+    window.deleteCustomer = async function(memberId, name) {
+      if (!confirm(`Are you sure you want to delete member ${name} (${memberId})? All their shopping records will also be permanently deleted.`)) {
+        return;
+      }
+
+      const token = getAdminToken();
+      try {
+        const res = await fetch('/api/admin/members/' + memberId, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to delete member');
+        await loadAdminDashboard();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+
+    // 4. Add Shopping
+    window.openAddShoppingFor = function(memberId) {
+      document.getElementById('form-add-shopping').reset();
+      document.getElementById('shp-member-id').value = memberId;
+      document.getElementById('shp-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('shp-order-num').value = '#ZV-' + Math.floor(1000 + Math.random() * 9000);
+      openModal('modal-add-shopping');
+    };
+
+    document.getElementById('form-add-shopping').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = getAdminToken();
+      const payload = {
+        memberId: document.getElementById('shp-member-id').value,
+        orderNumber: document.getElementById('shp-order-num').value.trim(),
+        amount: document.getElementById('shp-amount').value,
+        date: document.getElementById('shp-date').value,
+        status: document.getElementById('shp-status').value,
+        notes: document.getElementById('shp-notes').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/admin/shopping', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to add shopping transaction');
+
+        closeModal('modal-add-shopping');
+        await loadAdminDashboard();
+
+        let msg = `Shopping transaction recorded for ${data.member.name}! Total Shopping is now ${data.member.totalShopping}.`;
+        if (data.member.rewardStatus === 'Reward Unlocked') {
+          msg += `\n\n🎉 REWARD UNLOCKED! Customer has reached the loyalty threshold of ${currentSettings.rewardTargetShopping} shopping milestones!`;
+        }
+        alert(msg);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    });
+
+    // 5. Redeem Reward
+    window.redeemCustomerReward = async function(memberId, name) {
+      const notes = prompt(`Confirm reward redemption for ${name} (${memberId}):\nEnter redemption notes (e.g., voucher issued):`, 'Claimed in-store / WhatsApp voucher issued');
+      if (notes === null) return;
+
+      const token = getAdminToken();
+      try {
+        const res = await fetch(`/api/admin/members/${memberId}/redeem-reward`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ notes })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to redeem reward');
+
+        await loadAdminDashboard();
+        alert(`Reward successfully redeemed for ${name}! Customer cycle has been reset to 0 to begin earning their next reward.`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+
+    // 6. View Profile & History Modal
+    window.viewCustomerProfile = async function(memberId) {
+      const token = getAdminToken();
+      try {
+        const res = await fetch('/api/admin/members/' + memberId, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to load profile');
+
+        const { member, shopping } = await res.json();
+        document.getElementById('view-prof-title').textContent = member.name;
+        document.getElementById('view-prof-sub').textContent = `${member.memberId} • ${member.membershipLevel} Member • Status: ${member.status}`;
+
+        const detailsEl = document.getElementById('view-prof-details');
+        detailsEl.innerHTML = `
+          <div><strong>CNIC:</strong> ${member.cnic}</div>
+          <div><strong>Phone:</strong> ${member.phone || '---'}</div>
+          <div><strong>Total Shopping:</strong> ${member.totalShopping}</div>
+          <div><strong>Total Spent:</strong> ${formatPKR(member.totalSpent)}</div>
+          <div><strong>Total Stars:</strong> ⭐ ${member.totalStars}</div>
+          <div><strong>Cycle Shopping:</strong> ${member.currentCycleShopping || 0} / ${currentSettings.rewardTargetShopping}</div>
+          <div><strong>Reward Status:</strong> ${member.rewardStatus}</div>
+          <div><strong>Last Shopping:</strong> ${member.lastShoppingDate || 'None'}</div>
+          <div><strong>Registered:</strong> ${new Date(member.createdAt).toLocaleDateString('en-GB')}</div>
+          <div style="grid-column: 1 / -1;"><strong>Notes:</strong> ${member.notes || 'None'}</div>
+        `;
+
+        const tbody = document.getElementById('view-prof-shopping-tbody');
+        if (shopping.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 1.5rem; color: #9ca3af;">No shopping transactions found.</td></tr>`;
+        } else {
+          tbody.innerHTML = shopping.map(s => `
+            <tr>
+              <td>${s.date}</td>
+              <td><code>${s.orderNumber}</code></td>
+              <td>${s.notes || '---'}</td>
+              <td><strong>${formatPKR(s.amount)}</strong></td>
+              <td><span class="table-badge completed">${s.status}</span></td>
+              <td>
+                <button type="button" class="btn-row btn-row-del" onclick="deleteShoppingRecord('${s.shoppingId}', '${member.memberId}')">Delete</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        openModal('modal-view-profile');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+
+    window.deleteShoppingRecord = async function(shoppingId, memberId) {
+      if (!confirm('Are you sure you want to delete this shopping record? Customer spending and stars will be adjusted automatically.')) return;
+      const token = getAdminToken();
+      try {
+        const res = await fetch('/api/admin/shopping/' + shoppingId, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to delete');
+        await viewCustomerProfile(memberId);
+        await loadAdminDashboard();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+
+    // 7. Change Reward Target Setting
+    document.getElementById('btn-edit-target').addEventListener('click', () => {
+      document.getElementById('target-count-input').value = currentSettings.rewardTargetShopping;
+      openModal('modal-edit-target');
+    });
+
+    document.getElementById('form-edit-target').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = getAdminToken();
+      const newTarget = parseInt(document.getElementById('target-count-input').value, 10);
+      if (!newTarget || newTarget < 1) return;
+
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ rewardTargetShopping: newTarget })
+        });
+        if (!res.ok) throw new Error('Failed to update setting');
+        closeModal('modal-edit-target');
+        await loadAdminDashboard();
+        alert(`Loyalty reward target updated to ${newTarget} shopping milestones!`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    });
+
+    // 8. Change Admin Password
+    document.getElementById('btn-admin-change-pwd').addEventListener('click', () => {
+      document.getElementById('form-change-pwd').reset();
+      openModal('modal-change-pwd');
+    });
+
+    document.getElementById('form-change-pwd').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = getAdminToken();
+      const currentPassword = document.getElementById('admin-curr-pwd').value;
+      const newPassword = document.getElementById('admin-new-pwd').value;
+
+      try {
+        const res = await fetch('/api/admin/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ currentPassword, newPassword })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to update password');
+        closeModal('modal-change-pwd');
+        alert('Admin password changed successfully!');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    });
+
+    // Auto-check admin session on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAdminDashboard();
+    });
+  </script>
+</body>
+</html>
